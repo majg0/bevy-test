@@ -5,19 +5,19 @@ use crate::lib::space::I3;
 pub struct Orientation {
     pub forward: Direction,
     pub up: Direction,
-    // TODO: store `right` Direction
+    pub right: Direction,
 }
 
 impl Orientation {
-    pub fn new(forward: Direction, up: Direction) -> Orientation {
-        Orientation { forward, up }
-    }
-    pub fn right(self) -> I3 {
-        let y = self.up.i3();
-        let z = self.forward.i3();
-        y.cross(z)
+    pub fn new_upright(forward: Direction) -> Orientation {
+        let up = Direction::Yp;
+        Orientation {
+            forward,
+            up,
+            right: up.cross(forward),
+        }
     }
     pub fn adjust_i3(self, v: I3) -> I3 {
-        v.z * self.forward.i3() + v.y * self.up.i3() + v.x * self.right()
+        v.z * self.forward.i3() + v.y * self.up.i3() + v.x * self.right.i3()
     }
 }

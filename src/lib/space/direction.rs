@@ -24,4 +24,7 @@ impl Direction {
             Direction::Zp => I3::zp(),
         }
     }
+    pub fn cross(self, rhs: Direction) -> Direction {
+        self.i3().cross(rhs.i3()).direction().unwrap()
+    }
 }

@@ -1,6 +1,8 @@
 use bevy::prelude::Vec3;
 use std::ops;
 
+use crate::lib::space::Direction;
+
 #[derive(Clone, Copy, PartialEq, Eq, Hash, Debug)]
 pub struct I3 {
     pub x: i32,
@@ -47,8 +49,19 @@ impl I3 {
         )
     }
     // Conversions
-    pub fn as_vec(self) -> Vec3 {
+    pub fn vec3(self) -> Vec3 {
         Vec3::new(self.x as f32, self.y as f32, self.z as f32)
+    }
+    pub fn direction(self) -> Option<Direction> {
+        match self {
+            I3 { x: -1, y: 0, z: 0 } => Some(Direction::Xn),
+            I3 { x: 1, y: 0, z: 0 } => Some(Direction::Xp),
+            I3 { x: 0, y: -1, z: 0 } => Some(Direction::Yn),
+            I3 { x: 0, y: 1, z: 0 } => Some(Direction::Yp),
+            I3 { x: 0, y: 0, z: -1 } => Some(Direction::Zn),
+            I3 { x: 0, y: 0, z: 1 } => Some(Direction::Zp),
+            _ => None,
+        }
     }
     // Transformations
     pub fn px(self) -> I3 {

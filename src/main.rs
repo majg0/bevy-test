@@ -70,8 +70,8 @@ pub enum Stance {
 }
 
 impl Stance {
-    pub fn grab_wall(forward: Direction) -> Stance {
-        Stance::Climbing(Orientation::new(forward, up))
+    pub fn start_climb(forward: Direction) -> Stance {
+        Stance::Climbing(Orientation::new_upright(forward))
     }
 }
 
@@ -346,9 +346,9 @@ fn player_terrain_click(
         for e in game.player.selection.iter() {
             if let Ok(mut d) = dwarf_query.get_mut(*e) {
                 let start = d.path_node();
-                let goal = PathNode::from_pos(p);
+                let goal = PathNode { stance: None, p };
                 d.path = path_between(&game, start, goal);
-                d.p_target = p.as_vec();
+                d.p_target = p.vec3();
             }
         }
     }
@@ -426,9 +426,6 @@ impl PathNode {
             p,
         }
     }
-    pub fn from_pos(p: I3) -> PathNode {
-        PathNode { stance: None, p }
-    }
 }
 
 fn path_between(game: &Game, start: PathNode, goal: PathNode) -> Option<(Vec<PathNode>, i32)> {
@@ -462,7 +459,7 @@ fn path_between(game: &Game, start: PathNode, goal: PathNode) -> Option<(Vec<Pat
                         } else if s_p == StateOfMatter::Solid {
                             result.push((
                                 // TODO constructor
-                                PathNode::new(Stance::grab_wall(dir), p0),
+                                PathNode::new(Stance::start_climb(dir), p0),
                                 1,
                             ));
                         }
