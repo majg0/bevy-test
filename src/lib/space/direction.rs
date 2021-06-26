@@ -1,6 +1,6 @@
 use crate::lib::space::I3;
 
-#[derive(Clone, Copy, PartialEq, Hash, Eq)]
+#[derive(Clone, Copy, PartialEq, Hash, Eq, Debug)]
 pub enum Direction {
     Xn,
     Xp,
@@ -26,5 +26,15 @@ impl Direction {
     }
     pub fn cross(self, rhs: Direction) -> Direction {
         self.i3().cross(rhs.i3()).direction().unwrap()
+    }
+    pub fn flip(self) -> Direction {
+        match self {
+            Direction::Xn => Direction::Xp,
+            Direction::Xp => Direction::Xn,
+            Direction::Yn => Direction::Yp,
+            Direction::Yp => Direction::Yn,
+            Direction::Zn => Direction::Zp,
+            Direction::Zp => Direction::Zn,
+        }
     }
 }

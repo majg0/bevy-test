@@ -48,6 +48,12 @@ impl I3 {
             self.x * v.y - self.y * v.x,
         )
     }
+    pub fn map<F: Fn(i32) -> i32>(self, f: F) -> I3 {
+        I3::new(f(self.x), f(self.y), f(self.z))
+    }
+    pub fn each_less_than(self, v: I3) -> bool {
+        self.x < v.x && self.y < v.y && self.z < v.z
+    }
     // Conversions
     pub fn vec3(self) -> Vec3 {
         Vec3::new(self.x as f32, self.y as f32, self.z as f32)

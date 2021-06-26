@@ -1,3 +1,5 @@
+use std::ops::Index;
+
 use crate::lib::space::I3;
 use crate::lib::terrain::Block;
 
@@ -9,18 +11,19 @@ pub const CHUNK_SIDE_F: f32 = CHUNK_SIDE as f32;
 pub const CHUNK_AREA: usize = CHUNK_SIDE * CHUNK_SIDE;
 pub const CHUNK_VOLUME: usize = CHUNK_AREA * CHUNK_SIDE;
 pub const CHUNK_SIDE_SUB1: usize = CHUNK_SIDE - 1;
+pub const CHUNK_SIDE_SUB1_I: i32 = CHUNK_SIDE_SUB1 as i32;
 
 pub struct Chunk {
     pub blocks: [Block; CHUNK_VOLUME],
 }
 
 impl Chunk {
-    pub fn i_to_xyz(i: usize) -> (usize, usize, usize) {
+    pub fn i_to_p(i: usize) -> I3 {
         // TODO different pattern... 4x4x4 first, then next 4x4x4 etc
-        (
-            i & CHUNK_SIDE_SUB1,
-            (i >> CHUNK_SIDE_POW2) & CHUNK_SIDE_SUB1,
-            (i >> CHUNK_SIDE_POW) & CHUNK_SIDE_SUB1,
+        I3::new(
+            (i & CHUNK_SIDE_SUB1) as i32,
+            ((i >> CHUNK_SIDE_POW2) & CHUNK_SIDE_SUB1) as i32,
+            ((i >> CHUNK_SIDE_POW) & CHUNK_SIDE_SUB1) as i32,
         )
     }
     pub fn xyz_to_i(x: usize, y: usize, z: usize) -> usize {
@@ -28,21 +31,11 @@ impl Chunk {
         (y << CHUNK_SIDE_POW2) | (z << CHUNK_SIDE_POW) | x
     }
     pub fn i3_to_i(p: I3) -> usize {
-        Chunk::xyz_to_i(p.x as usize, p.y as usize, p.z as usize)
-    }
-    // pub unsafe fn at_local_raw(&self, p: I3) -> Block {
-    //     self.blocks[Chunk::xyz_to_i(p.x as usize, p.y as usize, p.z as usize)]
-    // }
-    pub fn at_local(&self, p: I3) -> Option<Block> {
-        if p.x < 0 || p.y < 0 || p.z < 0 {
-            return None;
-        }
-        let i = Chunk::i3_to_i(p);
-        if i < CHUNK_VOLUME {
-            Some(self.blocks[i])
-        } else {
-            None
-        }
+        Chunk::xyz_to_i(
+            (p.x as usize) & CHUNK_SIDE_SUB1,
+            (p.y as usize) & CHUNK_SIDE_SUB1,
+            (p.z as usize) & CHUNK_SIDE_SUB1,
+        )
     }
 }
 
@@ -51,5 +44,13 @@ impl Default for Chunk {
         Chunk {
             blocks: [Block::Air; CHUNK_VOLUME],
         }
+    }
+}
+
+impl Index<I3> for Chunk {
+    type Output = Block;
+
+    fn index(&self, p: I3) -> &Self::Output {
+        &self.blocks[Chunk::i3_to_i(p)]
     }
 }

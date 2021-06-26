@@ -1,4 +1,4 @@
-use crate::lib::physical::StateOfMatter;
+use crate::lib::terrain::StateOfMatter;
 
 #[derive(Clone, Copy, PartialEq, Debug)]
 pub enum Block {
