@@ -18,7 +18,7 @@ Each milestone completion is followed by an attempt to improve quality of life a
     - ✓ Ray Casting
     - ✓ Camera Control
     - ✓ Pathfinding
-    - Player Task Command "Destroy Block"
+    - ✓ Player Task Command "Remove Block"
     - Dwarf Task Execution
 
 2. Simplistic Terrain Refinement
