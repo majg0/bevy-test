@@ -1,9 +1,7 @@
-mod dwarf;
+mod model;
 mod plugin;
-mod stance;
 
 pub mod system;
 
-pub use dwarf::Dwarf;
+pub use model::*;
 pub use plugin::UnitPlugin;
-pub use stance::Stance;

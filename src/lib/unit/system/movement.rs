@@ -6,6 +6,8 @@ use bevy::prelude::Vec3;
 
 use crate::lib::unit::Dwarf;
 
+// TODO: move for the full time, even after path step finish
+
 pub fn movement(time: Res<Time>, mut query: Query<(&mut Dwarf, &mut Transform)>) {
     let dt = time.delta_seconds();
     for (mut dwarf, mut transform) in query.iter_mut() {

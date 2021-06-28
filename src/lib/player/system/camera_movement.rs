@@ -18,7 +18,7 @@ pub fn camera_movement(
     ] {
         if keyboard_input.pressed(key) {
             for (mut transform, _) in query.iter_mut() {
-                transform.translation = transform.translation + vec;
+                transform.translation += vec;
             }
         }
     }

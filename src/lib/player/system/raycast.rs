@@ -7,9 +7,9 @@ use bevy::prelude::Res;
 use bevy_mod_raycast::RayCastMethod;
 use bevy_mod_raycast::RayCastSource;
 
-use crate::lib::pathfinding::PathNode;
-use crate::lib::player::Players;
-use crate::lib::tasking::TaskSet;
+// use crate::lib::pathfinding::PathNode;
+use crate::lib::player::LocalPlayer;
+use crate::lib::tasking::TaskScheduler;
 use crate::lib::terrain::raycast_terrain;
 use crate::lib::terrain::TerrainRaycastSet;
 // use crate::lib::terrain::Chunk;
@@ -17,21 +17,14 @@ use crate::lib::terrain::TerrainRaycastSet;
 // use crate::lib::unit::Dwarf;
 
 pub fn raycast(
-    players: Res<Players>,
-    mut task_set_query: Query<&mut TaskSet>,
+    mut task_scheduler_query: Query<(&LocalPlayer, &mut TaskScheduler)>,
     mouse_button_input: Res<Input<MouseButton>>,
     raycast_source_query: Query<&RayCastSource<TerrainRaycastSet>>,
     // map: Res<Map>,
     // mut dwarf_query: Query<&mut Dwarf>,
     // chunk_query: Query<&Chunk>,
 ) {
-    for player in players.local_players.iter() {
-        let task_set = task_set_query.get_mut(*player);
-        if task_set.is_err() {
-            return;
-        }
-        let mut task_set = task_set.unwrap();
-
+    for (_, mut task_scheduler) in task_scheduler_query.iter_mut() {
         // TODO: key bindings?
         if !mouse_button_input.just_pressed(MouseButton::Left) {
             return;
@@ -40,8 +33,8 @@ pub fn raycast(
         // click_block_inside(&raycast_source_query);
         if let Some(hit) = raycast_terrain(&raycast_source_query) {
             let p = hit.outside();
-            task_set.remove_block(p);
-            dbg!(task_set);
+            task_scheduler.remove_block(p);
+            dbg!(task_scheduler);
             // for e in selection.0.iter() {
             //     if let Ok(mut d) = dwarf_query.get_mut(*e) {
             //         let start = d.path_node();

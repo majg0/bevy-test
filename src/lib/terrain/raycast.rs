@@ -5,6 +5,8 @@ use bevy_mod_raycast::RayCastSource;
 
 use crate::lib::space::I3;
 
+// TODO: raycasting API structure needs some thought...
+
 pub struct TerrainRaycastSet;
 
 pub struct TerrainRayHit {
@@ -21,11 +23,11 @@ impl TerrainRayHit {
     }
     pub fn inside(&self) -> I3 {
         let p = (self.origin - self.direction * 0.5).round();
-        return I3::from_vec(p);
+        I3::from_vec(p)
     }
     pub fn outside(&self) -> I3 {
         let p = (self.origin + self.direction * 0.5).round();
-        return I3::from_vec(p);
+        I3::from_vec(p)
     }
 }
 

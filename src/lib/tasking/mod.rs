@@ -1,7 +1,7 @@
-mod task_description;
-mod task_kind;
-mod task_set;
+mod plugin;
 
-pub use task_description::TaskDescription;
-pub use task_kind::TaskKind;
-pub use task_set::TaskSet;
+pub mod model;
+pub mod system;
+
+pub use model::*;
+pub use plugin::TaskingPlugin;

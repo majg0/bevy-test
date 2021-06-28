@@ -1,7 +1,3 @@
-mod direction;
-mod i3;
-mod orientation;
+mod model;
 
-pub use direction::Direction;
-pub use i3::I3;
-pub use orientation::Orientation;
+pub use model::*;

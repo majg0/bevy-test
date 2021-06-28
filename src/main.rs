@@ -16,6 +16,7 @@ use bevy_mod_raycast::{DefaultRaycastingPlugin, RayCastSource};
 use lib::debug::DebugPlugin;
 use lib::player::PlayerPlugin;
 use lib::space::I3;
+use lib::tasking::TaskingPlugin;
 use lib::terrain::Map;
 use lib::terrain::TerrainPlugin;
 use lib::terrain::TerrainRaycastSet;
@@ -36,6 +37,7 @@ fn main() {
         .insert_resource(ClearColor(Color::rgb(0.9, 0.9, 0.9)))
         .add_plugin(PlayerPlugin)
         .add_plugin(TerrainPlugin)
+        .add_plugin(TaskingPlugin)
         .add_plugin(UnitPlugin)
         .add_plugin(DebugPlugin)
         .add_startup_system(setup.system())

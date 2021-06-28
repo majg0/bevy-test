@@ -5,13 +5,13 @@ use crate::lib::space::Orientation;
 pub enum Stance {
     Standing,
     Climbing(Orientation),
-    Swimming,
-    Diving {
-        // breath: f32,
-    },
-    Falling {
-        // velocity: Vec3,
-    },
+    // Swimming,
+    // Diving {
+    //     // breath: f32,
+    // },
+    // Falling {
+    //     // velocity: Vec3,
+    // },
 }
 
 impl Stance {
